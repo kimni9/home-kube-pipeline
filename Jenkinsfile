@@ -35,11 +35,11 @@ spec:
     }
 
     stages {
-        stage('Clone repository') {
+        stage('Checkout') {
             steps {
-                git branch: 'main', 
-                    credentialsId: 'github-pat', 
-                    url: 'https://github.com/kimni9/home_kube.git'
+                // Эта стандартная команда использует код из репозитория,
+                // с которым настроен этот Jenkins Pipeline.
+                checkout scm
             }
         }
         
