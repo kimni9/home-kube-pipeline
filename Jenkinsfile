@@ -46,7 +46,7 @@ spec:
         stage('Build and Push Image') {
             steps {
                 container('kaniko') {
-                    sh '/kaniko/executor --context $PWD --dockerfile $PWD/docker/Dockerfile --destination=kimni9/my-app:latest'
+                    sh '/kaniko/executor --context $PWD --dockerfile $PWD/Dockerfile --destination=kimni9/my-app:latest'
                 }
             }
         }
