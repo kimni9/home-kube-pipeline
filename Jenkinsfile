@@ -1,33 +1,59 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            yaml '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    imagePullPolicy: Always
+    command:
+    - /busybox/cat
+    tty: true
+    volumeMounts:
+      - name: jenkins-docker-cfg
+        mountPath: /kaniko/.docker
+  - name: kubectl
+    image: bitnami/kubectl
+    imagePullPolicy: Always
+    command:
+    - cat
+    tty: true
+  volumes:
+  - name: jenkins-docker-cfg
+    projected:
+      sources:
+      - secret:
+          name: regcred
+          items:
+            - key: .dockerconfigjson
+              path: config.json
+'''
+        }
+    }
 
     stages {
-        stage('Checkout Source Code') {
+        stage('Clone repository') {
             steps {
-                checkout scm
-                echo "Code checked out successfully!"
+                git branch: 'main', url: 'https://github.com/kimni9/home_kube.git'
             }
         }
-
-        stage('Build Docker Image') {
+        
+        stage('Build and Push Image') {
             steps {
-                echo "Building Docker image..."
-                sh 'docker build -t my-first-jenkins-app .'
-                echo "Docker image built!"
+                container('kaniko') {
+                    sh '/kaniko/executor --context $PWD --dockerfile $PWD/docker/Dockerfile --destination=kimni9/my-app:latest'
+                }
             }
         }
 
         stage('Deploy to Kubernetes') {
             steps {
-                echo "Deploying application to Kubernetes..."
-                sh 'kubectl apply -k k8s/app'
-            }
-        }
-
-        stage('Print Hello') {
-            steps {
-                echo "Hello from our first Jenkinsfile!"
-                sh 'ls -la'
+                container('kubectl') {
+                    sh 'kubectl apply -k k8s/overlays/dev'
+                }
             }
         }
     }
