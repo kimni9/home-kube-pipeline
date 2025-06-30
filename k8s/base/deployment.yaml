@@ -13,6 +13,7 @@ spec:
       labels:
         app: jenkins
     spec:
+      serviceAccountName: jenkins-sa
       securityContext:
         runAsUser: 1000
         supplementalGroups: [999]

@@ -17,6 +17,13 @@ pipeline {
             }
         }
 
+        stage('Deploy to Kubernetes') {
+            steps {
+                echo "Deploying application to Kubernetes..."
+                sh 'kubectl apply -k k8s/app'
+            }
+        }
+
         stage('Print Hello') {
             steps {
                 echo "Hello from our first Jenkinsfile!"
