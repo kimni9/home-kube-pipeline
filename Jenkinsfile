@@ -37,7 +37,9 @@ spec:
     stages {
         stage('Clone repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/kimni9/home_kube.git'
+                git branch: 'main', 
+                    credentialsId: 'github-pat', 
+                    url: 'https://github.com/kimni9/home_kube.git'
             }
         }
         

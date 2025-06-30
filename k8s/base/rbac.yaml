@@ -11,7 +11,7 @@ metadata:
   namespace: jenkins
 rules:
 - apiGroups: ["", "apps", "extensions"]
-  resources: ["pods", "deployments", "replicasets", "services"]
+  resources: ["pods", "deployments", "replicasets", "services", "namespaces"]
   verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
