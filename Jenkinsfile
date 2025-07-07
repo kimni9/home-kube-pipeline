@@ -57,7 +57,7 @@ spec:
         stage('Deploy to Kubernetes') {
             steps {
                 container('kubectl') {
-                    sh 'kubectl apply -k k8s/overlays/dev --v=9'
+                    sh 'kubectl apply -k k8s/app --v=9'
                 }
             }
         }

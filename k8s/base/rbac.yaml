@@ -21,7 +21,7 @@ metadata:
   namespace: jenkins
 subjects:
 - kind: ServiceAccount
-  name: jenkins-sa
+  name: jenkins
   namespace: jenkins
 roleRef:
   kind: Role
