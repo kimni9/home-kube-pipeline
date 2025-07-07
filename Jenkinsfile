@@ -1,6 +1,7 @@
 pipeline {
     agent {
         kubernetes {
+            serviceAccount 'jenkins'
             yaml '''
 apiVersion: v1
 kind: Pod
@@ -19,7 +20,9 @@ spec:
     image: bitnami/kubectl
     imagePullPolicy: Always
     command:
-    - cat
+    - sleep
+    args:
+    - 99d
     tty: true
   volumes:
   - name: jenkins-docker-cfg
