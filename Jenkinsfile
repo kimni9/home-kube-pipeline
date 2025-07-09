@@ -24,6 +24,9 @@ spec:
     args:
     - 99d
     tty: true
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
   volumes:
   - name: jenkins-docker-cfg
     projected:
